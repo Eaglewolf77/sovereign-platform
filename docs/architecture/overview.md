@@ -1,7 +1,6 @@
 # Architecture Overview
 
-![Architecture Overview](../diagrams/architecture-overview.png)
-
+![Architecture Overview](https://raw.githubusercontent.com/Eaglewolf77/sovereign-platform/main/docs/diagrams/architecture/architecture-overview.png)
 
 ## Principles
 
