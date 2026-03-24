@@ -1,1 +1,69 @@
-
+flowchart TD
+%% =========================
+%% External Access
+%% =========================
+Internet["Internet"]
+DNS["DNS (one.com)"]
+Ingress["Cilium Gateway / Ingress"]
+Internet --> DNS --> Ingress
+%% =========================
+%% User Access
+%% =========================
+User["User / Laptop"]
+VPN["NetBird VPN"]
+ClusterNet["Cluster Access (SSH / kubectl / Grafana)"]
+User --> VPN --> ClusterNet
+%% =========================
+%% Infrastructure Layer
+%% =========================
+subgraph Infra["Virtualization & Hardware"]
+    HyperV["Hyper-V Virtualization"]
+end
+%% =========================
+%% Provisioning & GitOps
+%% =========================
+OpenTofu["OpenTofu (VM Provisioning / IaC)"]
+ArgoCD["Argo CD (GitOps / Declarative)"]
+OpenTofu --> ArgoCD
+%% =========================
+%% Kubernetes Cluster
+%% =========================
+K8s["Kubernetes Cluster (Control Plane + Workers)"]
+HyperV --> K8s
+ArgoCD --> K8s
+Ingress --> K8s
+%% =========================
+%% Platform Layer
+%% =========================
+subgraph Platform["MSC Platform Kubernetes"]
+    %% Core
+    subgraph Core["Core Layers"]
+        Keycloak["Keycloak (Identity / OIDC)"]
+        Longhorn["Longhorn (Distributed Storage)"]
+        Cilium["Cilium (eBPF Networking)"]
+    end
+    %% Apps
+    subgraph Apps["Application Layer"]
+        Nextcloud["Nextcloud"]
+        Collabora["Collabora"]
+        Future["Future Apps"]
+    end
+    %% Backup
+    subgraph Backup["Backup Layer"]
+        Velero["Velero (Backup / Restore)"]
+    end
+end
+%% =========================
+%% Internal Relationships
+%% =========================
+K8s --> Core
+Core --> Apps
+%% Velero active usage
+Velero --> Longhorn
+Velero --> Apps
+%% Access into platform
+ClusterNet --> Platform
+%% =========================
+%% Optional future (commented)
+%% =========================
+%% Velero --> S3["Object Storage (MinIO / S3)"]
