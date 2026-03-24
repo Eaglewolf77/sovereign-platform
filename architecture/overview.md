@@ -12,3 +12,64 @@ The platform is composed of:
 - DNS managed externally (one.com)
 
 Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on platform services.
+
+## Trust Boundaries
+
+- External:
+  - Internet
+  - DNS provider
+  - User devices
+
+- Secure Access Boundary:
+  - NetBird VPN required for administrative access
+
+- Cluster Boundary:
+  - All workloads run inside Kubernetes
+  - Network policies enforced via Cilium
+
+- Identity Boundary:
+  - Keycloak acts as the central identity provider
+  - No service trusts unauthenticated traffic
+
+## Access Model
+
+- End-users access applications via:
+  Internet → DNS → Cilium Gateway → Applications
+
+- Operators access the platform via:
+  User → NetBird VPN → Cluster (kubectl, SSH, Grafana)
+
+## Core Domains
+
+### Identity
+- Keycloak (OIDC provider)
+- Central authentication and SSO
+
+### Compute
+- Kubernetes cluster (control plane + workers)
+- Provisioned via OpenTofu on Hyper-V
+
+### Networking
+- Cilium (CNI + Network Policies)
+- Cilium Gateway (Ingress)
+
+### Storage
+- Longhorn (distributed block storage)
+
+### GitOps
+- ArgoCD (declarative deployments)
+
+### Backup
+- Velero (cluster + volume backups)
+
+### Access
+- NetBird VPN (secure operator access)
+
+### Applications
+- Nextcloud
+- Collabora
+- Future workloads
+
+
+
+- Identity is enforced via OIDC (Keycloak)
