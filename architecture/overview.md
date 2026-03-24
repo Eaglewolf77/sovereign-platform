@@ -1,7 +1,5 @@
 # Architecture Overview
 
-# Architecture Overview
-
 ![Architecture Overview](./diagrams/architecture-overview.png)
 
 
