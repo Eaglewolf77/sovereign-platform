@@ -1,3 +1,13 @@
+# Architecture Overview
+
+## Principles
+
+- Identity-first: All access is authenticated via OIDC (Keycloak)
+- GitOps-driven: All platform changes are applied declaratively via ArgoCD
+- Sovereign: Platform is self-hosted and independent of hyperscalers
+- Secure-by-default: Network policies and zero-trust principles apply
+- Low operational overhead: Designed to minimize manual intervention
+
 ## High-Level Architecture
 
 The platform is composed of:
@@ -13,14 +23,7 @@ The platform is composed of:
 
 Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on platform services.
 
-
-## Trust Boundaries## Principles
-
-- Identity-first: All access is authenticated via OIDC (Keycloak)
-- GitOps-driven: All platform changes are applied declaratively via ArgoCD
-- Sovereign: Platform is self-hosted and independent of hyperscalers
-- Secure-by-default: Network policies and zero-trust principles apply
-- Low operational overhead: Designed to minimize manual intervention
+## Trust Boundaries
 
 - External:
   - Internet
@@ -76,4 +79,3 @@ Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on pla
 - Nextcloud
 - Collabora
 - Future workloads
-
