@@ -1,5 +1,10 @@
 # Architecture Overview
 
+# Architecture Overview
+
+![Architecture Overview](./diagrams/architecture-overview.png)
+
+
 ## Principles
 
 - Identity-first: All access is authenticated via OIDC (Keycloak)
