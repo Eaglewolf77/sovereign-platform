@@ -16,7 +16,7 @@ The platform is composed of:
 - GitOps-driven deployment using ArgoCD
 - Cilium for networking and ingress control
 - Longhorn for distributed storage
-- Keycloak as the identity provider (OIDC)
+- Keycloak as the identity provider (OIDC), running outside the Kubernetes cluster on a dedicated VM
 - Velero for backup and restore
 - NetBird VPN for secure operator access
 - DNS managed externally (one.com)
@@ -31,14 +31,15 @@ Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on pla
   - User devices
 
 - Secure Access Boundary:
-  - NetBird VPN required for administrative access
+  - NetBird VPN is required for administrative access
 
 - Cluster Boundary:
   - All workloads run inside Kubernetes
-  - Network policies enforced via Cilium
+  - Network policies are enforced via Cilium
 
 - Identity Boundary:
-  - Keycloak acts as the central identity provider
+  - Keycloak runs outside the Kubernetes cluster
+  - Acts as the central identity provider
   - No service trusts unauthenticated traffic
 
 ## Access Model
@@ -52,7 +53,7 @@ Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on pla
 ## Core Domains
 
 ### Identity
-- Keycloak (OIDC provider)
+- Keycloak (OIDC provider, deployed on external VM)
 - Central authentication and SSO
 
 ### Compute
@@ -69,7 +70,7 @@ Applications (e.g., Nextcloud, Collabora) run inside the cluster and rely on pla
 ### GitOps
 - ArgoCD (declarative deployments)
 
-### Backup
+### Backup & Recovery
 - Velero (cluster + volume backups)
 
 ### Access
