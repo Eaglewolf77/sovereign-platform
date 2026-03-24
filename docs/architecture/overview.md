@@ -1,6 +1,6 @@
 # Architecture Overview
 
-![Architecture Overview](./diagrams/architecture-overview.png)
+![Architecture Overview](../diagrams/architecture-overview.png)
 
 
 ## Principles
