@@ -1,7 +1,7 @@
 # ADR-001: Kubernetes Distribution
 
 ## Status
-Proposed
+Accepted
 
 ## Context
 
@@ -9,51 +9,41 @@ The platform requires a Kubernetes distribution that supports:
 
 - On-premise deployment on Hyper-V
 - GitOps-driven operations (ArgoCD)
-- Low operational overhead due to limited available time
-- Strong security posture aligned with zero-trust principles
 - Compatibility with Cilium (CNI), Longhorn (storage), and other cloud-native components
-- Long-term maintainability and scalability
+- Identity-first architecture with external OIDC provider (Keycloak)
+- Incremental, step-by-step development
+- Full control over system components for learning and debugging
 
-The platform is intended to evolve into a sovereign, identity-first system with minimal manual intervention.
+The platform is developed as a long-term project with a focus on understanding, maintainability, and architectural clarity.
 
-Key requirements:
+Options considered:
 
-- Minimal configuration drift
-- Declarative management where possible
-- Stable and predictable upgrades
-- Good support for OIDC integration and RBAC
-
-The following options are considered:
-
+- Kubernetes on AlmaLinux (kubeadm-based)
 - k3s
-- Talos Linux (with Kubernetes)
-- kubeadm-based cluster
+- Talos Linux
 
 ---
 
 ## Decision
 
-Talos Linux is selected as the Kubernetes distribution for the platform.
+Kubernetes will be deployed on AlmaLinux using a kubeadm-based setup.
 
 ---
 
 ## Rationale
 
-Talos Linux provides:
+AlmaLinux with kubeadm provides:
 
-- Immutable, API-driven operating system
-- No SSH access, reducing attack surface
-- Fully declarative configuration model
-- Strong alignment with GitOps principles
-- Reduced operational overhead once deployed
-- Predictable upgrades and lifecycle management
+- Full control over the operating system and Kubernetes components
+- Standard, upstream Kubernetes experience
+- Familiar operational model (SSH, systemd, package management)
+- Flexibility for troubleshooting and iterative development
 
-This aligns closely with the platform principles:
+This aligns with the current phase of the platform:
 
-- Identity-first: Reduced reliance on node-level access
-- GitOps-driven: Declarative infrastructure and cluster state
-- Secure-by-default: Minimal OS surface and enforced patterns
-- Low operational overhead: Simplified maintenance model
+- Prioritizes learning and transparency over abstraction
+- Enables step-by-step implementation
+- Avoids hidden complexity from opinionated distributions
 
 ---
 
@@ -62,26 +52,25 @@ This aligns closely with the platform principles:
 ### k3s
 
 Pros:
-- Lightweight and easy to bootstrap
-- Lower initial complexity
-- Well-suited for small environments
+- Lightweight and fast to deploy
+- Reduced operational complexity
 
 Cons:
-- Less strict operational model
-- Allows configuration drift more easily
-- Relies on traditional OS management (SSH, package updates)
+- Abstracts away Kubernetes internals
+- Less control over components
 
-### kubeadm
+---
+
+### Talos Linux
 
 Pros:
-- Maximum flexibility
-- Upstream Kubernetes experience
+- Immutable and secure
+- Strong alignment with GitOps and zero-trust
 
 Cons:
-- High operational overhead
-- Manual lifecycle management
-- Increased risk of configuration drift
-- Not aligned with low-maintenance goal
+- Steep learning curve
+- Limited flexibility for debugging
+- Higher initial complexity
 
 ---
 
@@ -89,29 +78,26 @@ Cons:
 
 ### Positive
 
-- Strong alignment with platform principles
-- Reduced attack surface (no SSH)
-- Declarative and reproducible cluster management
-- Better long-term maintainability
+- Full visibility and control over the platform
+- Easier debugging and troubleshooting
+- Strong foundation for learning Kubernetes internals
 
 ### Negative
 
-- Steeper learning curve
-- More complex initial setup
-- Smaller community compared to k3s
+- Higher operational overhead
+- Increased risk of configuration drift
+- Manual responsibility for OS and cluster lifecycle management
 
 ### Neutral
 
-- Requires learning Talos-specific tooling and workflows
+- Future migration to a more opinionated platform (e.g., Talos) remains possible
 
 ---
 
 ## Notes
 
-This decision prioritizes long-term maintainability and architectural consistency over initial simplicity.
+To mitigate operational risks:
 
-Future ADRs will build on this decision, including:
-
-- Networking model (Cilium configuration)
-- Identity integration (OIDC with Kubernetes API)
-- GitOps repository structure
+- Node configuration should be automated (future ADR)
+- GitOps must be strictly enforced for workloads
+- OS hardening and patching strategy should be defined
