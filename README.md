@@ -106,7 +106,7 @@ Storage is handled outside Kubernetes via LINSTOR:
 Architecture Decision Records (ADR) are documented in:
 
 ```
-/docs
+/docs/adr
 ```
 
 These documents describe design choices, trade-offs, and reasoning behind the platform.
