@@ -1,38 +1,124 @@
+
 # Sovereign Platform
 
-This project focuses on building a self-hosted, identity-first platform using Kubernetes, GitOps, and Infrastructure as Code.
+A sovereign, identity-first platform built with Kubernetes, GitOps, and Infrastructure as Code.
 
-The goal is to design a secure, scalable, and sovereign platform with full control over identity, infrastructure, and data.
+Designed to eliminate hyperscaler dependencies while enforcing Zero Trust and full control over identity, infrastructure, and data.
 
 ---
 
-## Core Principles
+## 🧠 Core Principles
 
 - Identity-first architecture (OIDC / Keycloak)
+    
 - Zero Trust security model
+    
 - Self-hosted infrastructure (no hyperscaler dependency)
+    
 - Declarative infrastructure and GitOps workflows
+    
 - Observability and reliability by design
+    
+- Separation of control plane components
+    
 
 ---
 
-## Planned Components
+## 🏗️ Architecture Overview
+
+This platform is structured around clear trust boundaries:
+
+- **Public Zone** – Internet-facing services via Cilium Gateway API
+    
+- **Private Zone** – Administrative access via NetBird VPN
+    
+- **Internal Zone** – Kubernetes cluster and storage layer
+    
+- **Identity Layer** – External Keycloak instance acting as trust anchor
+    
+
+Key design decisions:
+
+- Externalized identity provider (Keycloak outside Kubernetes)
+    
+- Secure access via VPN (no direct public control plane exposure)
+    
+- eBPF-based networking using Cilium
+    
+- Distributed storage using LINSTOR
+    
+- GitOps-driven deployments with Argo CD
+    
+
+---
+
+## ⚙️ Core Components
 
 - Kubernetes (kubeadm)
-- Cilium (eBPF networking)
-- Keycloak (identity provider)
-- Longhorn (distributed storage)
+    
+- Cilium (eBPF networking & Gateway API)
+    
+- LINSTOR (distributed storage layer)
+    
+- Keycloak (external identity provider)
+    
 - Argo CD (GitOps)
+    
 - Velero (backup & disaster recovery)
+    
+- NetBird (secure administrative access)
+    
+- Grafana (observability)
+    
 
 ---
 
-## Project Status
+## 🔐 Security Model
 
-Work in progress — currently focusing on architecture, structure, and design decisions.
+- Identity-first authentication (OIDC)
+    
+- Zero Trust networking principles
+    
+- Segmented network zones (Public / Private / Internal)
+    
+- No direct access to Kubernetes API from the public internet
+    
+- VPN-based administrative access
+    
 
 ---
 
-## Purpose
+## 🧱 Storage Architecture
 
-This project is part of a long-term initiative to build a sovereign, identity-centric platform aligned with modern platform engineering and security principles.
+Storage is handled outside Kubernetes via LINSTOR:
+
+- Decoupled storage layer
+    
+- Multi-node replication
+    
+- Designed for resilience and sovereignty
+    
+
+---
+
+## 📜 Architecture Decisions
+
+Architecture Decision Records (ADR) are documented in:
+
+```
+/docs
+```
+
+These documents describe design choices, trade-offs, and reasoning behind the platform.
+
+---
+
+## 🚧 Project Status
+
+Work in progress — currently focused on architecture, design decisions, and platform foundation.
+
+---
+
+## 🎯 Purpose
+
+This project is part of a long-term initiative to design and build a sovereign, identity-centric platform aligned with modern platform engineering and security principles.
