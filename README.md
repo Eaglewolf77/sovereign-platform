@@ -54,7 +54,7 @@ Key design decisions:
 
 ## ⚙️ Core Components
 
-- Kubernetes (kubeadm)
+- Kubernetes (kubeadm-based cluster provisioning)
     
 - Cilium (eBPF networking & Gateway API)
     

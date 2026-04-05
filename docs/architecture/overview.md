@@ -1,4 +1,4 @@
-# Architecture Overview
+wsl ~w# Architecture Overview
 
 ![Architecture Overview](./diagrams/architecture-overview-v2.png)
 
