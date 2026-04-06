@@ -1,0 +1,70 @@
+flowchart TB
+
+User[User Internet]
+Admin[Admin NetBird VPN]
+
+%% ===== PUBLIC ZONE =====
+subgraph PublicZone
+    DNS[INWX DNS]
+    Gateway[Cilium Gateway API]
+    Keycloak[Keycloak OIDC]
+    Collabora[Collabora Online]
+end
+
+%% ===== PRIVATE ZONE =====
+subgraph PrivateZone
+    NetBird[NetBird VPN]
+    Authentik[Authentik Admin Identity]
+    ArgoCD[Argo CD]
+    Grafana[Grafana]
+    K8sAPI[Kubernetes API]
+end
+
+%% ===== INTERNAL ZONE =====
+subgraph InternalZone
+    subgraph KubernetesCluster
+        CP[Control Plane kubeadm]
+        W1[Worker Node 1]
+        W2[Worker Node 2]
+        W3[Worker Node 3]
+    end
+
+    subgraph StorageLayer
+        LINSTOR[LINSTOR Storage]
+    end
+
+    subgraph IdentityLayer
+        KCVM[Keycloak VM]
+    end
+end
+
+%% ===== FLOWS =====
+
+%% --- USER FLOW ---
+User --> DNS
+DNS --> Gateway
+
+Gateway --> Keycloak
+Gateway --> Collabora
+
+Keycloak --> KCVM
+
+Collabora --> W1
+Collabora --> W2
+Collabora --> W3
+
+%% --- STORAGE ---
+W1 --> LINSTOR
+W2 --> LINSTOR
+W3 --> LINSTOR
+
+%% --- ADMIN FLOW ---
+Admin --> NetBird
+NetBird --> Authentik
+
+Authentik --> ArgoCD
+Authentik --> Grafana
+Authentik --> K8sAPI
+
+%% --- CONTROL ---
+ArgoCD --> CP
